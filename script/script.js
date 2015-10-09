@@ -11,7 +11,7 @@ var plot = d3.select('.canvas')
 	.append('g')
 	.attr('class','plot')
 	//.attr('transform','translate()') --> complete this line here
-
+	.attr('transform','translate('+margin.l +',' + margin.r +')')
 
 //Start with 100 symbols
 var numOfSymbols = 100;
@@ -25,7 +25,34 @@ var numOfSymbols = 100;
 // --> color
 var symbols = [];
 
+for (var i = 0; i < numOfSymbols; i++) {
+	symbols.push({x:getRandomInt(0, width), y:getRandomInt(0, height), size:getRandomInt(0, 50), color:d3.rgb(getRandomInt(0, 255),getRandomInt(0, 255),getRandomInt(0, 255)), type:getRandomInt(0, 1)});
+}
+
 //With the array you've created and populated, draw circles to represent these symbols
 symbols.forEach(function(symbol){
-	
+	// differentiate type
+	if (symbol.type == 0) {
+		// circle
+		plot
+			.append('circle')
+			.attr('cx',symbol.x)
+			.attr('cy',symbol.y)
+			.attr('r',symbol.size)
+			.style('fill',symbol.color);
+	} else {
+		// square
+		plot
+			.append('rect')
+			.attr('x', symbol.x)
+			.attr('y', symbol.y)
+			.attr('width', symbol.size)
+			.attr('height', symbol.size)
+			.style('fill',symbol.color);
+	}
 })
+
+
+function getRandomInt(min, max) {
+	return Math.floor(Math.random() * (max - min + 1)) + min;
+}
